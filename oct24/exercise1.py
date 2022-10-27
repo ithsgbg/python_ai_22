@@ -1,3 +1,4 @@
+from packaging.version import Version
 data = [
     {
         'name': 'A',
@@ -38,7 +39,7 @@ data = [
 ]
 
 """
-values = [5, 3, 1, 7, 2]
 
-values.sort()
-print(values)
+sorted_values = sorted(data, key=lambda item: Version(item['version']))
+for item in sorted_values:
+    print(item)
