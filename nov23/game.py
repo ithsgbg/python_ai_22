@@ -1,6 +1,7 @@
 import pygame
 from enum import Enum
 import random
+import numpy as np
 
 
 # Constants
@@ -54,7 +55,6 @@ class SnakeGame:
         self.frame_iteration = 0
         self.iterations_since_reward = 0
         self.reset()
-        self._place_food()
 
     def reset(self):
         # Init game state
@@ -177,6 +177,51 @@ class SnakeGame:
 
         # 6. Return game state
         return False
+
+    def play_step_ai(self, action):
+        self.iterations_since_reward += 1
+
+        # 1. Check if window is closed
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        # Convert ai action into a new direction
+        clockwise_dir = [Direction.RIGHT, Direction.DOWN, Direction.LEFT, Direction.UP]
+        dir_idx = clockwise_dir.index(self.direction)
+
+        if np.array_equal(action, [0, 1, 0]):  # Turn Right
+            dir_idx = (dir_idx + 1) % len(clockwise_dir)
+        if np.array_equal(action, [0, 0, 1]):  # Turn Left
+            dir_idx = (dir_idx - 1) % len(clockwise_dir)
+        self.direction = clockwise_dir[dir_idx]  # New direction
+
+        # 2. Move
+        self._move()
+
+        # 3. Check if game is over
+        if self.is_collision():
+            return True, -10, self.score  # Game Over, Reward, Score
+        elif self.iterations_since_reward > 100 * len(self.body):
+            return True, -10, self.score  # Game Over, Reward, Score
+
+        # 4. Check if food is reached
+        reward = 0
+        if self.head == self.food:
+            self.iterations_since_reward = 0
+            self.score += 1
+            self._place_food()
+            # extend snake
+            self._extend_snake()
+            reward = 10
+
+        # 5. Update UI and clock
+        self._update_ui()
+        self.clock.tick(self.speed)
+
+        # 6. Return game state
+        return False, reward, self.score
 
     @staticmethod
     def human_play():

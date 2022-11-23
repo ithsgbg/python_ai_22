@@ -1,0 +1,24 @@
+Example:
+
+[
+    0, 0, 1,     -> Danger Path
+    0, 0, 1, 0,  -> Direction
+    1, 0, 0, 1   -> Fruit Location
+]
+
+[
+    Danger Straight, Danger Right, Danger Left,
+    Direction Left, Direction Right, Direction Up, Direction Down,
+    Fruit Left, Fruit Right, Food Up, Food Down
+]
+
+Action = Output from AI
+[straight, right, left]
+
+[1, 0, 0] Keep on going straight
+[0, 1, 0] Turn right
+[0, 0, 1] Turn left
+
+Reward
+Found food = +10
+Death = -10
