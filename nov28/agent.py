@@ -98,6 +98,8 @@ class Agent:
 
     def _get_danger(self, danger_state, game, heading):
         if heading == 'straight':
+            direction = game.direction
+            
             return (danger_state['dir_r'] and game.is_collision(danger_state['point_r'])) or \
                    (danger_state['dir_l'] and game.is_collision(danger_state['point_l'])) or \
                    (danger_state['dir_u'] and game.is_collision(danger_state['point_u'])) or \
