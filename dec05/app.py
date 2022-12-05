@@ -17,5 +17,3 @@ def index():
 @app.get('/date/{date}')
 def get_by_date(date):
     return Value.find(**{'date': {'$eq': date}})
-
-
