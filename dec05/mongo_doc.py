@@ -121,10 +121,14 @@ class Document(dict):
         # Update the object
         self.__dict__.update(d)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '\n'.join(f'{k} = {v}' for k, v in self.__dict__.items())
 
     def to_dict(self) -> dict:
+        """
+        Converts object to dict
+        :returns: dict representation of the object
+        """
         if '_id' in self.__dict__:
             self._id = str(self._id)
         return self.__dict__
@@ -216,10 +220,10 @@ class Document(dict):
         return ResultList([cls(**item) for item in cls.collection.find({})])
 
     @classmethod
-    def all_iter(cls):
+    def all_iter(cls) -> dict:
         """
-        Retrieve all documents from the collection
-        :return: ResultList of documents
+        Retrieve all documents from the collection as an iterator
+        :yields: dict representation of next document
         """
         for item in cls.collection.find({}):
             yield cls(**item).to_dict()
@@ -253,7 +257,12 @@ class Document(dict):
         return cls.collection.count_documents({})
 
     @classmethod
-    def random_sample(cls, size=10):
+    def random_sample(cls, size:int=10) -> ResultList:
+        """
+        Returns a random sample of documents.
+        param size: int - Number of documents to sample. 10 is the default value.
+        :returns: ResultList containing the samples
+        """
         pipe = [
             {
                 "$sample": {
