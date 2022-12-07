@@ -1,0 +1,5 @@
+1670424345: mosquitto version 2.0.15 starting
+1670424345: Config loaded from /mosquitto/config/mosquitto.conf.
+1670424345: Opening ipv4 listen socket on port 1883.
+1670424345: Opening ipv6 listen socket on port 1883.
+1670424345: mosquitto version 2.0.15 running
